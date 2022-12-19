@@ -22,9 +22,7 @@ namespace prodktr.AuthApi.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<ServiceResponse<int>>> Register(UserDto request)
         {
-            var response = await _authRepo.Register(
-                new User { Username = request.Username }, request.Password
-            );
+            var response = await _authService.RegisterUser(request);
             if (!response.Success)
             {
                 return BadRequest(response);
@@ -33,9 +31,9 @@ namespace prodktr.AuthApi.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<ServiceResponse<int>>> Login(UserDto request)
+        public async Task<ActionResult<ServiceResponse<AuthResponseDto>>> Login(UserDto request)
         {
-            var response = await _authRepo.Login(request.Username, request.Password);
+            var response = await _authService.Login(request);
             if (!response.Success)
             {
                 return BadRequest(response);
