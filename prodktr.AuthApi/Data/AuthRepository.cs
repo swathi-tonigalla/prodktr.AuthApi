@@ -121,12 +121,23 @@ namespace prodktr.AuthApi.Data
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<User> GetUser(string username)
+        public async Task<User> GetUser(string refreshToken)
         {
-            var user = await _context.Users
-              .FirstOrDefaultAsync(u => u.Username.ToLower().Equals(username.ToLower()));
-            
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
             return user;
         }
-    }
+        public async Task<bool> UpdateUser(User user)
+        {
+            var existingRecord = await _context.Users
+               .FirstOrDefaultAsync(u => u.Username.ToLower().Equals(user.Username.ToLower()));
+            if (user is null)
+            {
+                throw new Exception("User not found");
+            }
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return true;
+
+        }
+        }
 }

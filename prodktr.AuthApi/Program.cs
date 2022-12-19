@@ -5,6 +5,8 @@ using Microsoft.OpenApi.Models;
 using prodktr.AuthApi.Data.Interfaces;
 using prodktr.AuthApi.Data;
 using Swashbuckle.AspNetCore.Filters;
+using prodktr.AuthApi.Services.Interfaces;
+using prodktr.AuthApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,7 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

@@ -11,10 +11,12 @@ namespace prodktr.AuthApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepo;
+        private readonly IAuthService _authService;
 
-        public AuthController(IAuthRepository authRepo)
+        public AuthController(IAuthRepository authRepo,IAuthService authService)
         {
             _authRepo = authRepo;
+            this._authService = authService;
         }
 
         [HttpPost("Register")]
@@ -43,7 +45,7 @@ namespace prodktr.AuthApi.Controllers
         [HttpPost("refresh-token")]
         public async Task<ActionResult<string>> RefreshToken()
         {
-            var response = await _authRepo.RefreshToken();
+            var response = await _authService.RefreshToken();
             if (response.Success)
                 return Ok(response);
 
