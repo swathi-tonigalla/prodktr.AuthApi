@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using prodktr.AuthApi.Data.Interfaces;
 using prodktr.AuthApi.Services;
 using prodktr.AuthApi.Services.Interfaces;
+using System.Data;
 
 namespace prodktr.AuthApi.Controllers
 {
@@ -48,6 +50,11 @@ namespace prodktr.AuthApi.Controllers
                 return Ok(response);
 
             return BadRequest(response.Message);
+        }
+        [HttpGet, Authorize(Roles = "User,Admin")]
+        public ActionResult<string> TestAuthorization()
+        {
+            return Ok("You're authorized!");
         }
     }
 }
