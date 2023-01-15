@@ -15,7 +15,7 @@ namespace prodktr.AuthApi.Services.Interfaces
     }
     public interface IUserService
     {
-
+        Task<List<UserResponseDto>> GetAllUsers();
     }
     public interface IClientService
     {

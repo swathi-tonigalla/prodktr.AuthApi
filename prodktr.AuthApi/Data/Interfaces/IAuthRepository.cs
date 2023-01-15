@@ -12,4 +12,8 @@ namespace prodktr.AuthApi.Data.Interfaces
         Task<User> GetUserByEmail(string email);
         Task<Permission> GetPermissions(string? unique_id);
     }
+    public interface IUsersRepository
+    {
+        Task<List<User>> GetAllUsers();
+    }
 }
