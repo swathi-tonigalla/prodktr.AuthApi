@@ -1,8 +1,8 @@
-﻿using Azure.Core;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using prodktr.AuthApi.Data.Interfaces;
+using prodktr.AuthApi.Models;
 using prodktr.AuthApi.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -24,43 +24,64 @@ namespace prodktr.AuthApi.Services
         }
 
         public IAuthRepository _authRepo { get; }
-        public async Task<ServiceResponse<int>> RegisterUser(UserDto request)
+        public async Task<ServiceResponse<long>> RegisterUser(UserDto request)
         {
-            var response = new ServiceResponse<int>();
-            if (await _authRepo.UserExists(request.Username))
+            var response = new ServiceResponse<long>();
+            if (await _authRepo.UserExists(request.email))
             {
                 response.Success = false;
                 response.Message = "User already exists.";
                 return response;
             }
-            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            CreatePasswordHash(request.email, out byte[] passwordHash, out byte[] passwordSalt);
 
             var user = new User
             {
-                Username = request.Username,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt
+                name = request.email,
+                //password = passwordHash,
+                //PasswordSalt = passwordSalt
             };
 
            var result = await _authRepo.RegisterUser(user);
-            response.Data = result.Id;
+            response.Data = result.id;
             return response;
         }
+        public async Task<AuthResponseDto> Authenticate(UserDto request)
+        {
+            var user = await _authRepo.GetUserByEmail(request.email);
+            if(user==null)
+            {
+                throw new Exception("invalid_credentials");
+            }
+            var permissions = await _authRepo.GetPermissions(user.unique_id);
+            string token = CreateToken(user);
+            var authDto = new AuthResponseDto
+            {
+                Token = token,
+                unique_id= user.unique_id,
+                name= user.name,
+                roles= user.primary_role,
+                permission= permissions
+
+            };
+            return authDto;
+        }
+
         public async Task<ServiceResponse<AuthResponseDto>> Login(UserDto request)
         {
             var response = new ServiceResponse<AuthResponseDto>();
-            var user = await _authRepo.GetUser(request.Username);
+            var user = await _authRepo.GetUser(request.email);
             if (user == null)
             {
                 response.Success = false;
                 response.Message = "User not found.";
             }
                        
-            else if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
-            {
-                response.Success = false;
-                response.Message = "Wrong password.";
-            }
+            //else if (!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            //{
+            //    response.Success = false;
+            //    response.Message = "Wrong password.";
+            //}
             else
             {
                 string token = CreateToken(user);
@@ -69,7 +90,7 @@ namespace prodktr.AuthApi.Services
 
                 var authDto =  new AuthResponseDto
                 {
-                    Success = true,
+                    //Success = true,
                     Token = token,
                     RefreshToken = refreshToken.Token,
                     TokenExpires = refreshToken.Expires
@@ -94,12 +115,13 @@ namespace prodktr.AuthApi.Services
             var user = await _authRepo.GetUserByRefreshToken(refreshToken);
             if (user == null)
             {
-                return new AuthResponseDto { Message = "Invalid Refresh Token" };
+                throw new Exception("Invalid Refresh Token");
             }
-            else if (user.TokenExpires < DateTime.Now)
-            {
-                return new AuthResponseDto { Message = "Token expired." };
-            }
+            
+            //else if (user.TokenExpires < DateTime.Now)
+            //{
+            //    return new AuthResponseDto { Message = "Token expired." };
+            //}
 
             string token = CreateToken(user);
             var newRefreshToken = CreateRefreshToken();
@@ -107,7 +129,7 @@ namespace prodktr.AuthApi.Services
 
             return new AuthResponseDto
             {
-                Success = true,
+                //Success = true,
                 Token = token,
                 RefreshToken = newRefreshToken.Token,
                 TokenExpires = newRefreshToken.Expires
@@ -117,9 +139,9 @@ namespace prodktr.AuthApi.Services
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.NameIdentifier, user.id.ToString()),
+                new Claim(ClaimTypes.Name, user.name),
+                new Claim(ClaimTypes.Role, user.primary_role)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
@@ -158,9 +180,9 @@ namespace prodktr.AuthApi.Services
             _httpContextAccessor?.HttpContext?.Response
                 .Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
 
-            user.RefreshToken = refreshToken.Token;
-            user.TokenCreated = refreshToken.Created;
-            user.TokenExpires = refreshToken.Expires;
+            user.remember_token = refreshToken.Token;
+            user.created_at = refreshToken.Created;
+           // user.TokenExpires = refreshToken.Expires;
 
           return  await _authRepo.UpdateUser(user);
         }

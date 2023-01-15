@@ -9,5 +9,7 @@ namespace prodktr.AuthApi.Data.Interfaces
         Task<bool> UpdateUser(User user);
         Task<User> RegisterUser(User user);
         Task<User> GetUser(string username);
+        Task<User> GetUserByEmail(string email);
+        Task<Permission> GetPermissions(string? unique_id);
     }
 }

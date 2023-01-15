@@ -14,5 +14,6 @@ namespace prodktr.AuthApi.Data
 
 
         public DbSet<User> Users => Set<User>();
+        public DbSet<Permission> Permission => Set<Permission>();
     }
 }

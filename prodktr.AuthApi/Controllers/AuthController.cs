@@ -32,24 +32,22 @@ namespace prodktr.AuthApi.Controllers
             return Ok(response);
         }
 
+       
         [HttpPost("Login")]
-        public async Task<ActionResult<ServiceResponse<AuthResponseDto>>> Login(UserDto request)
+        public async Task<AuthResponseDto> Login(UserDto request)
         {
-            var response = await _authService.Login(request);
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-            return Ok(response);
+            var response = await _authService.Authenticate(request);
+            
+            return response;
         }
         [HttpPost("refresh-token")]
         public async Task<ActionResult<string>> RefreshToken()
         {
             var response = await _authService.RefreshToken();
-            if (response.Success)
-                return Ok(response);
+            //if (response.Success)
+            //    return Ok(response);
 
-            return BadRequest(response.Message);
+            return "";
         }
         [HttpGet, Authorize(Roles = "User,Admin")]
         public ActionResult<string> TestAuthorization()
