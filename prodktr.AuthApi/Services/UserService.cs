@@ -26,6 +26,11 @@ namespace prodktr.AuthApi.Services
             var dto = _mapper.Map<List<UserResponseDto>>(users);
             return dto;
         }
+        public async Task<List<Client>> GetAllClients()
+        {
+            var users = await _userRepo.GetAllClients();
+            return users;
+        }
     }
 
     }

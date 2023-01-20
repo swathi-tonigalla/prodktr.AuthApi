@@ -9,16 +9,4 @@ namespace prodktr.AuthApi.Services.Interfaces
         Task<ServiceResponse<AuthResponseDto>> Login(UserDto request);
         Task<AuthResponseDto> Authenticate(UserDto request);
     }
-    public interface IDashboardService
-    {
-
-    }
-    public interface IUserService
-    {
-        Task<List<UserResponseDto>> GetAllUsers();
-    }
-    public interface IClientService
-    {
-
-    }
 }

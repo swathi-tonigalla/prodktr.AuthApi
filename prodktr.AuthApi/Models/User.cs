@@ -18,16 +18,5 @@ namespace prodktr.AuthApi.Models
         public byte? is_deleted { get; set; } = 0;
 
     }
-//    id bigint UN AI PK
-//    unique_id varchar(255)
-//name varchar(255)
-//email varchar(255)
-//email_verified_at varchar(255)
-//password varchar(255)
-//password_confirmation varchar(255)
-//primary_role varchar(255)
-//remember_token varchar(100)
-//created_at timestamp
-//updated_at timestamp
-//is_deleted tinyin
-}
+        
+    }

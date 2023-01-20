@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using prodktr.AuthApi.Services.Interfaces;
 using System.Data;
 
 namespace prodktr.AuthApi.Controllers
@@ -9,10 +11,22 @@ namespace prodktr.AuthApi.Controllers
     [ApiController]
     public class DashBoardController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<string> TestAuthorization()
+        private readonly IDashboardService _dashboardService;
+
+        public DashBoardController( IDashboardService dashboardService)
         {
-            return Ok("You're authorized!");
+            this._dashboardService = dashboardService;
+        }
+        [HttpGet("Instrumentconfig/{id}")]
+        public async Task<ActionResult<InstrumentConfuguredByYouDto>> GetInstrumentconfig_Configby_You(string id)
+        {
+            var users = await _dashboardService.GetInstrumentconfig_Configby_You(id);
+            return users;
+        }
+        [HttpGet("AllInstrumentConfig")]
+        public async Task<ActionResult<InstrumentResponseDto>> GetAllInstrumentConfigs()
+        {
+            return await _dashboardService.GetAllInstrumentConfigs();
         }
     }
 }

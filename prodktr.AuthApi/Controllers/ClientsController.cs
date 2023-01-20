@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using prodktr.AuthApi.Services.Interfaces;
 
 namespace prodktr.AuthApi.Controllers
 {
@@ -8,16 +9,17 @@ namespace prodktr.AuthApi.Controllers
     [ApiController]
     public class ClientsController : ControllerBase
     {
-        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public ClientsController(IMapper mapper)
+        public ClientsController( IUserService userService)
         {
-            this._mapper = mapper;
+            this._userService = userService;
         }
         [HttpGet("GetAll")]
-        public ActionResult<string> TestAuthorization()
+        public async Task<ActionResult<List<Client>>> GetAllClients()
         {
-            return Ok("You're authorized!");
+            var users = await _userService.GetAllClients();
+            return users;
         }
     }
 }

@@ -19,4 +19,12 @@
         public DateTime? createdAt { get; set; }
         public DateTime? updatedat { get; set; }
     }
+    public class InstrumentConfuguredByYouDto
+    {
+        public int instrumentConfuguredByYou { get; set; }
+    }
+    public class InstrumentResponseDto
+    {
+        public int AllUserInstrumentConfigured { get; set; }
+    }
 }
