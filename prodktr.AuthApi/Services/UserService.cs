@@ -32,5 +32,4 @@ namespace prodktr.AuthApi.Services
             return users;
         }
     }
-
-    }
+}

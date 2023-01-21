@@ -10,11 +10,22 @@ using prodktr.AuthApi.Services;
 using MySql.Data.MySqlClient;
 using System.Text.Json;
 using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<ProdktrsegueDatabaseSettings>(
+                builder.Configuration.GetSection(nameof(ProdktrsegueDatabaseSettings)));
 
+builder.Services.AddSingleton<IProdktrsegueDatabaseSettings>(sp =>
+    sp.GetRequiredService<IOptions<ProdktrsegueDatabaseSettings>>().Value);
+
+builder.Services.AddSingleton<IMongoClient>(s =>
+        new MongoClient(builder.Configuration.GetValue<string>("ProdktrSegueDatabaseSettings:ConnectionString")));
+
+builder.Services.AddScoped<IProjectService, ProjectService>();
 //builder.Services.AddDbContext<DataContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<DataContext>(options =>
