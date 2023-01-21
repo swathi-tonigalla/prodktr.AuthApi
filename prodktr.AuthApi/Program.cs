@@ -41,7 +41,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8
                     .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value!)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero,
+            LifetimeValidator = LifetimeValidator,
+            ValidateLifetime = true 
         };
     });
 builder.Services.AddHttpContextAccessor();
@@ -65,3 +68,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken token, TokenValidationParameters @params)
+{
+    if (expires != null)
+    {
+        return expires > DateTime.UtcNow;
+    }
+    return false;
+}

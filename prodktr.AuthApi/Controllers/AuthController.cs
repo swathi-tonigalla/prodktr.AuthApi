@@ -10,6 +10,8 @@ namespace prodktr.AuthApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    
+
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepo;
@@ -51,7 +53,7 @@ namespace prodktr.AuthApi.Controllers
 
             return BadRequest(response.Message);
         }
-        [HttpGet, Authorize(Roles = "User,Admin")]
+        [HttpGet, Authorize]
         public ActionResult<string> TestAuthorization()
         {
             return Ok("You're authorized!");
