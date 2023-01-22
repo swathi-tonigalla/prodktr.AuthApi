@@ -5,6 +5,7 @@ using prodktr.AuthApi.Services.Interfaces;
 namespace prodktr.AuthApi.Controllers
 {
     [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class ProjectConfigureController : ControllerBase
     {
@@ -14,11 +15,10 @@ namespace prodktr.AuthApi.Controllers
         {
             this._projectService = projectService;
         }
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<List<projectconfigured>>> GetAllConfiguredProjects()
+        [HttpGet("get-all-configure-project")]
+        public async Task<ActionResult<List<ProjectResponse>>> GetAllConfiguredProjects()
         {
-            var users = await _projectService.GetAllConfiguredProjects();
-            return users;
+            return await _projectService.GetAllConfiguredProjects();
         }
     }
 }

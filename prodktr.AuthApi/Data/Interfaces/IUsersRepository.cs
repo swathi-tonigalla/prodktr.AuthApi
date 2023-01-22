@@ -6,5 +6,6 @@
         Task<List<Client>> GetAllClients();
         Task<InstrumentConfuguredByYouDto> GetInstrumentconfig_Configby_You(string uniqueId);
         Task<InstrumentResponseDto> GetAllInstrumentConfigs();
+        Task<UserPermissions> GetNetUserPermission(string uniqueId);
     }
 }

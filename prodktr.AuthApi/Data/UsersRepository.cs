@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using prodktr.AuthApi.Data.Interfaces;
+using Ubiety.Dns.Core;
 
 namespace prodktr.AuthApi.Data
 {
@@ -70,6 +71,24 @@ namespace prodktr.AuthApi.Data
                 if (configList != null)
                 {
                     response.AllUserInstrumentConfigured = configList.Count;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<UserPermissions> GetNetUserPermission(string uniqueId)
+        {
+            var response = new UserPermissions();
+            try
+            {
+                var permissionsList = await _context.Permission.Where(x => x.user_unique_id.Equals(uniqueId)).FirstOrDefaultAsync();
+                if (permissionsList != null)
+                {
+                    response.permission = permissionsList;
                 }
                 return response;
             }

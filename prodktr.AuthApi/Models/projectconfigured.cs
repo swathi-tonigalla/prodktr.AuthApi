@@ -40,7 +40,7 @@ namespace prodktr.AuthApi.Models
         public bool isMasterSel { get; set; } 
         public bool isInstrumentSaved { get; set; } 
         public string toggleCheck { get; set; } = String.Empty;
-        public List<InstrumentsDatum> instrumentsData { get; set; }
+        public List<InstrumentsData> instrumentsData { get; set; }
         public string selectedInstrumentType { get; set; } = String.Empty;
         public string sourceName { get; set; } = String.Empty;
         public int instTypeSourceID { get; set; } 
@@ -51,10 +51,9 @@ namespace prodktr.AuthApi.Models
         public string projectStatus { get; set; } = String.Empty;
     }
 
-    public class InstrumentsDatum
+    public class InstrumentsData
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        
         public string Id { get; set; } = String.Empty;
         public int colId { get; set; }
         public string group { get; set; } = String.Empty;
@@ -71,9 +70,7 @@ namespace prodktr.AuthApi.Models
 
     public class InstumentDataMapped
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = String.Empty; 
+        
         public string mpColName { get; set; } = String.Empty;
         public string mpgroup { get; set; } = String.Empty;
         public int instID { get; set; } 
@@ -84,15 +81,7 @@ namespace prodktr.AuthApi.Models
         public string mappedSourceName { get; set; } = String.Empty;
     }
 
-    public class MappedInstrument
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = String.Empty;
-        public List<InstumentDataMapped> instumentDataMapped { get; set; }
-        public int mappedInstID { get; set; } 
-        public string mappedInstrumentName { get; set; } = String.Empty;
-    }
+   
     [BsonIgnoreExtraElements]
     public class projectconfigured
     {
@@ -106,9 +95,40 @@ namespace prodktr.AuthApi.Models
         public string destinationName { get; set; } = String.Empty;
         public List<Instrument> instruments { get; set; } 
         public bool isProjectAutoomapped { get; set; } 
-        public List<MappedInstrument> mappedInstruments { get; set; } 
+        public List<MappedInstruments_Collection> MappedInstruments_Collection { get; set; } 
         public string updatedAt { get; set; } = String.Empty;
     }
+   
 
+    public class MappedInstruments
+    {
+        
+        public InstumentDataMapped instumentDataMapped { get; set; }
+        public int mappedInstID { get; set; }
+        public string mappedInstrumentName { get; set; }
+    }
+    [BsonIgnoreExtraElements]
+    public class MappedInstruments_Collection
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; } = String.Empty;
+        public string projectID { get; set; } = String.Empty;
+        public string projectName { get; set; } = String.Empty;
+        public string clientName { get; set; } = String.Empty;
+        public MappedInstruments mappedInstruments { get; set; }
+    }
+    public class ProjectResponse
+    {
+        public string id { get; set; }
+        public string userName { get; set; }
+        public string projectName { get; set; }
+        public string clientName { get; set; }
+        public int createdAt { get; set; }
 
+        public string destinationName { get; set; }
+        public List<Instrument> instruments { get; set; }
+        public bool isProjectAutoomapped { get; set; }
+        public List<MappedInstruments_Collection> mappedInstruments { get; set; }
+    }
 }
