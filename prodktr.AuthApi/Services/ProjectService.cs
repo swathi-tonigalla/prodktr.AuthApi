@@ -26,5 +26,19 @@ namespace prodktr.AuthApi.Services
             }
            
         }
+        public async Task<List<projectconfigured>> GetAllConfiguredProjectsSample()
+        {
+            try
+            {
+                var response = _projectconfigured.Find(student => true).ToList();
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
     }
 }
