@@ -9,13 +9,13 @@ namespace prodktr.AuthApi.Services
     public class ProjectService : IProjectService
     {
         private readonly IMongoCollection<projectconfigured> _projectconfigured;
-        private readonly IMongoCollection<MappedInstruments_Collection> _mappedInstruments_Collection;
+        private readonly IMongoCollection<MappedInstrumentCollection> _mappedInstruments_Collection;
       
         public ProjectService(IProdktrsegueDatabaseSettings settings, IMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _projectconfigured = database.GetCollection<projectconfigured>(settings.ProjectConfiguredCollectionName);
-            _mappedInstruments_Collection = database.GetCollection<MappedInstruments_Collection>(settings.ProjectConfiguredCollectionName);
+            _mappedInstruments_Collection = database.GetCollection<MappedInstrumentCollection>(settings.MappedInstruments_CollectionName);
         }
         public async Task<List<ProjectResponse>> GetAllConfiguredProjects()
         {
@@ -27,14 +27,15 @@ namespace prodktr.AuthApi.Services
                 {
                     response.Add(new ProjectResponse
                     {
+                        id = item.id,
                         projectName = item.projectName,
                         clientName = item.clientName,
                         userName = item.userName,
-                        //createdAt = item.createdAt,
+                        createdAt = item.createdAt,
                         destinationName = item.destinationName,
                         instruments = item.instruments,
                         isProjectAutoomapped = item.isProjectAutoomapped,
-                        mappedInstruments = await GetAllMappings(item.projectName),
+                        MappedInstrument = await GetAllMappings(item.projectName),
                     });
                 }
                 return response;
@@ -46,12 +47,12 @@ namespace prodktr.AuthApi.Services
             }
            
         }
-        public async Task<List<MappedInstruments_Collection>> GetAllMappings(string projectName)
+        public async Task<List<MappedInstrumentCollection>> GetAllMappings(string projectName)
         {
             try
             {
-                var results = await _mappedInstruments_Collection.FindAsync(c => c.projectName.Equals(projectName));
-                return results.ToList();
+                var result= await _mappedInstruments_Collection.FindAsync(c => c.projectName.Equals("Demo_Project"));
+                return result.ToList();
             }
             catch (Exception ex)
             {

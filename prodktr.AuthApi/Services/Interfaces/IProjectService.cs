@@ -3,6 +3,7 @@
     public interface IProjectService
     {
         Task<List<ProjectResponse>> GetAllConfiguredProjects();
+        Task<List<MappedInstrumentCollection>> GetAllMappings(string projectName);
     }
     public interface IProdktrsegueDatabaseSettings
     {

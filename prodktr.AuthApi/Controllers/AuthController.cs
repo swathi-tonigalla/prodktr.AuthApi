@@ -49,7 +49,7 @@ namespace prodktr.AuthApi.Controllers
 
             return "";
         }
-        [HttpGet, Authorize(Roles = "User,Admin")]
+        [HttpGet, Authorize(Roles = "User,Administrator")]
         public ActionResult<string> TestAuthorization()
         {
             return Ok("You're authorized!");
