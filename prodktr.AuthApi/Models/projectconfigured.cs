@@ -41,14 +41,17 @@ namespace prodktr.AuthApi.Models
 
     public class Instrument
     {
-        public int instrumentID { get; set; }
-        public string instrumentName { get; set; }
+        [BsonElement("instrumentID")]
+        public int mappedInstID { get; set; }
+        [BsonElement("instrumentName")]
+        public string mappedInstrumentName { get; set; }
         public string completed { get; set; }
         public string isChecked { get; set; }
         public bool isMasterSel { get; set; }
         public bool isInstrumentSaved { get; set; }
-        public string toggleCheck { get; set; }
-        public List<instrumentsData> instrumentsData { get; set; }
+        public bool toggleCheck { get; set; }
+        [BsonElement("instrumentsData")]
+        public List<instrumentsData> instumentDataMapped { get; set; }
         public string selectedInstrumentType { get; set; }
         public string sourceName { get; set; }
         public int instTypeSourceID { get; set; }
@@ -92,7 +95,8 @@ namespace prodktr.AuthApi.Models
         public string userName { get; set; }
         public long createdAt { get; set; }
         public string destinationName { get; set; }
-        public List<Instrument> instruments { get; set; }
+        [BsonElement("instruments")]
+        public List<Instrument> mappedInstruments { get; set; }
         public List<InstrumentType> instrumentTypes { get; set; }
         public bool isProjectStarted { get; set; }
         public bool isProjectAutoomapped { get; set; }
@@ -107,9 +111,9 @@ namespace prodktr.AuthApi.Models
             public string userName { get; set; }
             public long createdAt { get; set; }
             public string destinationName { get; set; }
-            public List<Instrument> instruments { get; set; }
+           // public List<Instrument> instruments { get; set; }
             public bool isProjectAutoomapped { get; set; }
-            public List<MappedInstruments> mappedInstruments { get; set; }
+            public List<Instrument> mappedInstruments { get; set; }
             public string updatedAt { get; set; }
     }
 }

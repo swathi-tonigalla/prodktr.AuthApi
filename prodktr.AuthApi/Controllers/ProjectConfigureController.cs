@@ -16,7 +16,7 @@ namespace prodktr.AuthApi.Controllers
             this._projectService = projectService;
         }
         [HttpGet("get-all-configure-project")]
-        public async Task<ActionResult<List<ProjectResponse>>> GetAllConfiguredProjects()
+        public async Task<ActionResult<List<projectconfigured>>> GetAllConfiguredProjects()
         {
 
             var response = await _projectService.GetAllConfiguredProjects();

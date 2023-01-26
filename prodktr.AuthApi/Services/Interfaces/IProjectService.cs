@@ -2,7 +2,7 @@
 {
     public interface IProjectService
     {
-        Task<List<ProjectResponse>> GetAllConfiguredProjects();
+        Task<List<projectconfigured>> GetAllConfiguredProjects();
         Task<List<MappedInstruments>> GetAllMappings(string projectName);
     }
     public interface IProdktrsegueDatabaseSettings

@@ -17,28 +17,29 @@ namespace prodktr.AuthApi.Services
             _projectconfigured = database.GetCollection<projectconfigured>(settings.ProjectConfiguredCollectionName);
             _mappedInstruments_Collection = database.GetCollection<MappedInstrumentCollection>(settings.MappedInstruments_CollectionName);
         }
-        public async Task<List<ProjectResponse>> GetAllConfiguredProjects()
+        public async Task<List<projectconfigured>> GetAllConfiguredProjects()
         {
             try
             {
                 var projectCollection = _projectconfigured.Find(student => true).ToList();
-                var response = new List<ProjectResponse>();
-                foreach (var item in projectCollection)
-                {
-                    response.Add(new ProjectResponse
-                    {
-                        id = item.id,
-                        projectName = item.projectName,
-                        clientName = item.clientName,
-                        userName = item.userName,
-                        createdAt = item.createdAt,
-                        destinationName = item.destinationName,
-                        instruments = item.instruments.Distinct().ToList(),
-                        isProjectAutoomapped = item.isProjectAutoomapped,
-                        mappedInstruments = await GetAllMappings(item.projectName),
-                    });
-                }
-                return response;
+                return projectCollection;
+                //var response = new List<ProjectResponse>();
+                //foreach (var item in projectCollection)
+                //{
+                //    response.Add(new ProjectResponse
+                //    {
+                //        id = item.id,
+                //        projectName = item.projectName,
+                //        clientName = item.clientName,
+                //        userName = item.userName,
+                //        createdAt = item.createdAt,
+                //        destinationName = item.destinationName,
+                //        mappedInstruments = item.mappedInstruments,
+                //        isProjectAutoomapped = item.isProjectAutoomapped,
+                //        // mappedInstruments = await GetAllMappings(item.projectName),
+                //    });
+                //}
+                //return response;
             }
             catch (Exception ex)
             {
