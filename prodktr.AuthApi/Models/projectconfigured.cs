@@ -6,11 +6,11 @@ using System.Diagnostics.Metrics;
 namespace prodktr.AuthApi.Models
 {
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
-    
 
-    
 
-   
+
+
+
     [BsonIgnoreExtraElements]
     public class MappedInstrumentCollection
     {
@@ -36,22 +36,19 @@ namespace prodktr.AuthApi.Models
     //    public string mappedInstrumentName { get; set; } = String.Empty;
     //}
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
-    
-   
+
+
 
     public class Instrument
     {
-        [BsonElement("instrumentID")]
-        public int mappedInstID { get; set; }
-        [BsonElement("instrumentName")]
-        public string mappedInstrumentName { get; set; }
+        public int instrumentID { get; set; }
+        public string instrumentName { get; set; }
         public string completed { get; set; }
         public string isChecked { get; set; }
         public bool isMasterSel { get; set; }
         public bool isInstrumentSaved { get; set; }
         public bool toggleCheck { get; set; }
-        [BsonElement("instrumentsData")]
-        public List<instrumentsData> instumentDataMapped { get; set; }
+        public List<instrumentsData> instrumentsData { get; set; }
         public string selectedInstrumentType { get; set; }
         public string sourceName { get; set; }
         public int instTypeSourceID { get; set; }
@@ -95,25 +92,32 @@ namespace prodktr.AuthApi.Models
         public string userName { get; set; }
         public long createdAt { get; set; }
         public string destinationName { get; set; }
-        [BsonElement("instruments")]
-        public List<Instrument> mappedInstruments { get; set; }
+        public List<Instrument> instruments { get; set; }
         public List<InstrumentType> instrumentTypes { get; set; }
         public bool isProjectStarted { get; set; }
         public bool isProjectAutoomapped { get; set; }
         public object updatedAt { get; set; }
     }
-    [BsonIgnoreExtraElements]
-    public class ProjectResponse
+    public class Project
     {
-            public string id { get; set; }
-            public string projectName { get; set; }
-            public string clientName { get; set; }
-            public string userName { get; set; }
-            public long createdAt { get; set; }
-            public string destinationName { get; set; }
-           // public List<Instrument> instruments { get; set; }
-            public bool isProjectAutoomapped { get; set; }
-            public List<Instrument> mappedInstruments { get; set; }
-            public string updatedAt { get; set; }
+        public string id { get; set; }
+        public string user_id { get; set; }
+        public string projectName { get; set; }
+        public string destinationID { get; set; }
+        public string clientName { get; set; }
+        public string userName { get; set; }
+        public string destinationName { get; set; }
+        public List<Instrument> instruments { get; set; }
+        public List<Instrument_type> instrumentTypes { get; set; }
+        public bool isProjectAutoomapped { get; set; }
+        public bool isProjectStarted { get; set; }
+        public List<MappedInstruments> mappedInstruments { get; set; }
+        public string updatedAt { get; set; }
+        public long createdAt { get; set; }
+        public string autoMap { get; set; }
+        public int mappedInstrumentCount { get; set; }
     }
+    //sourceLegacy?:SourceLegacy[];
+    //mappingModel?:MappingModel[];
+   
 }

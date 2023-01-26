@@ -2,8 +2,9 @@
 {
     public interface IProjectService
     {
-        Task<List<projectconfigured>> GetAllConfiguredProjects();
-        Task<List<MappedInstruments>> GetAllMappings(string projectName);
+        Task<List<Project>> GetAllConfiguredProjects();
+        Task<List<MappedInstruments>> GetMappedInstrument(string projectName, List<Instrument> instruments);
+        Task<string> LoadJson();
     }
     public interface IProdktrsegueDatabaseSettings
     {

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace prodktr.AuthApi.Models
 {
@@ -22,7 +24,6 @@ namespace prodktr.AuthApi.Models
         
 
     }
-
     public class MappedInstruments
     {
         public InstumentDataMapped instumentDataMapped { get; set; }
