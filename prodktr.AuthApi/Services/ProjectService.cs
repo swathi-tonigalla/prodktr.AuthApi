@@ -33,9 +33,9 @@ namespace prodktr.AuthApi.Services
                         userName = item.userName,
                         createdAt = item.createdAt,
                         destinationName = item.destinationName,
-                        instruments = item.instruments,
+                        instruments = item.instruments.Distinct().ToList(),
                         isProjectAutoomapped = item.isProjectAutoomapped,
-                        MappedInstrument = await GetAllMappings(item.projectName),
+                        mappedInstruments = await GetAllMappings(item.projectName),
                     });
                 }
                 return response;
@@ -47,12 +47,14 @@ namespace prodktr.AuthApi.Services
             }
            
         }
-        public async Task<List<MappedInstrumentCollection>> GetAllMappings(string projectName)
+        public async Task<List<MappedInstruments>> GetAllMappings(string projectName)
         {
             try
             {
-                var result= await _mappedInstruments_Collection.FindAsync(c => c.projectName.Equals("Demo_Project"));
-                return result.ToList();
+                var result= await _mappedInstruments_Collection.FindAsync(c => c.projectName.Equals(projectName));
+
+                var collection = result.ToList().Select(x=>x.mappedInstruments).ToList();
+                return collection;
             }
             catch (Exception ex)
             {

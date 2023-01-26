@@ -6,11 +6,7 @@ using System.Diagnostics.Metrics;
 namespace prodktr.AuthApi.Models
 {
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
-    public class Id
-    {
-        [JsonProperty("$oid")]
-        public string oid { get; set; }
-    }
+    
 
     
 
@@ -52,7 +48,7 @@ namespace prodktr.AuthApi.Models
         public bool isMasterSel { get; set; }
         public bool isInstrumentSaved { get; set; }
         public string toggleCheck { get; set; }
-        public List<InstrumentsDatum> instrumentsData { get; set; }
+        public List<instrumentsData> instrumentsData { get; set; }
         public string selectedInstrumentType { get; set; }
         public string sourceName { get; set; }
         public int instTypeSourceID { get; set; }
@@ -63,7 +59,7 @@ namespace prodktr.AuthApi.Models
         public string projectStatus { get; set; } = String.Empty;
     }
 
-    public class InstrumentsDatum
+    public class instrumentsData
     {
         public int colId { get; set; }
         public string group { get; set; }
@@ -105,20 +101,15 @@ namespace prodktr.AuthApi.Models
     [BsonIgnoreExtraElements]
     public class ProjectResponse
     {
-        public Id _id { get; set; }
-        public string id { get; set; }
-        public string userName { get; set; }
-        public string destinationID { get; set; }
-        public string projectName { get; set; }
-        public string clientName { get; set; }
-        public long createdAt { get; set; }
-
-        public string destinationName { get; set; }
-        public List<Instrument> instruments { get; set; }
-        public List<MappedInstrumentCollection> MappedInstrument { get; set; }
-        public List<InstrumentType> instrumentTypes { get; set; }
-        public bool isProjectStarted { get; set; }
-        public bool isProjectAutoomapped { get; set; }
-        public object updatedAt { get; set; }
+            public string id { get; set; }
+            public string projectName { get; set; }
+            public string clientName { get; set; }
+            public string userName { get; set; }
+            public long createdAt { get; set; }
+            public string destinationName { get; set; }
+            public List<Instrument> instruments { get; set; }
+            public bool isProjectAutoomapped { get; set; }
+            public List<MappedInstruments> mappedInstruments { get; set; }
+            public string updatedAt { get; set; }
     }
 }
