@@ -46,6 +46,7 @@ namespace prodktr.AuthApi.Services
                         mappedInstruments = await GetMappedInstrument(item.projectName,item.instruments),
                     });
                 }
+                var test = JsonConvert.SerializeObject(response);
                 return response;
             }
             catch (Exception ex)
@@ -55,37 +56,20 @@ namespace prodktr.AuthApi.Services
             }
            
         }
-        public async Task<string> LoadJson()
-        {
-            var test = string.Empty;
-            using (StreamReader r = new StreamReader(@"C:\Swathi\Core\prodktr.AuthApi\prodktr.AuthApi\Test.json"))
-            {
-                string json = r.ReadToEnd();
-                dynamic array = JsonConvert.DeserializeObject(json);
-                foreach (var item in array)
-                {
-                    Console.WriteLine("{0} {1}", item.instruments, item.mappedInstruments);
-                }
-                test = json;
-            }
-            return test;
-        }
+      
         public async Task<List<MappedInstruments>> GetMappedInstrument(string projectName, List<Instrument> instruments)
         {
             try
             {
                 var distinctcollection = new List<MappedInstruments>();
-                foreach (var item in instruments)
-                {
                     var builder = Builders<MappedInstrumentCollection>.Filter;
-                    var filter = builder.Eq("projectName", projectName) & builder.Eq("mappedInstruments.mappedInstID", item.instrumentID);
+                    var filter = builder.Eq("projectName", projectName) ;
                     var result = await _mappedInstruments_Collection.Find(filter).ToListAsync();
                     if(result.Count>0)
                     {
                         var mappedInstrument = result.Select(x => x.mappedInstruments).ToList();
                         distinctcollection.AddRange(mappedInstrument);
                     }
-                }
                 
                 return distinctcollection;
             }
